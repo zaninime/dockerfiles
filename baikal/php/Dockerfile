@@ -1,4 +1,5 @@
 FROM alpine:latest as builder
+LABEL maintainer "Francesco Zanini <francesco@zanini.me>"
 
 ENV BAIKAL_VERSION 0.4.6
 
