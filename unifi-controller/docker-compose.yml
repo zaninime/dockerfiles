@@ -2,13 +2,14 @@
 version: '3'
 services:
   unifi:
-    image: zaninime/unifi:5.5.20-2
+    image: zaninime/unifi:5.5.29-2
     ports:
       - 6789:6789
       - 8080:8080
       - 8443:8443
       - 8843:8843
       - 8880:8880
+      - 3478:3478/udp
     volumes:
       - data:/data
     environment:

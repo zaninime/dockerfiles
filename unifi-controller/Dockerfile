@@ -2,7 +2,7 @@ FROM debian:stretch
 LABEL maintainer "Francesco Zanini <francesco@zanini.me>"
 
 VOLUME /data
-EXPOSE 6789 8080 8443 8843 8880
+EXPOSE 6789 8080 8443 8843 8880 3478/udp
 
 ENV UNIFI_VERSION 5.6.29
 ENV JVM_OPTS ""
