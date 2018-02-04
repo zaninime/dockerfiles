@@ -1,5 +1,5 @@
 FROM debian:stretch
-LABEL maintainer="Francesco Zanini <francesco@zanini.me>"
+LABEL maintainer "Francesco Zanini <francesco@zanini.me>"
 
 VOLUME /data
 EXPOSE 6789 8080 8443 8843 8880

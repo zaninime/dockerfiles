@@ -1,5 +1,5 @@
 FROM fedora:27
-LABEL maintainer="Francesco Zanini <francesco@zanini.me>"
+LABEL maintainer "Francesco Zanini <francesco@zanini.me>"
 
 ENV IDF_PATH "/usr/local/esp-idf-v3.0-rc1"
 ENV PATH "${PATH}:/usr/local/xtensa-esp32-elf/bin"
