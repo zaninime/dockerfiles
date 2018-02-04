@@ -9,8 +9,8 @@ ENV JVM_OPTS ""
 
 RUN apt-get update && \
     apt-get install -y curl && \
-    curl -o /tmp/unifi.deb https://dl.ubnt.com/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
-    apt install -y /tmp/unifi.deb && \
+    curl -sSo /tmp/unifi.deb https://dl.ubnt.com/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
+    apt-get install -y /tmp/unifi.deb && \
     rm -rf /var/lib/apt/lists/* /tmp/unifi.deb
 
 COPY docker-entrypoint.sh /
