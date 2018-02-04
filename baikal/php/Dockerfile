@@ -1,19 +1,18 @@
 FROM alpine:latest as builder
-LABEL maintainer "Francesco Zanini <francesco@zanini.me>"
 
 ENV BAIKAL_VERSION 0.4.6
 
 WORKDIR /home
 RUN apk update && \
     apk add curl sqlite
-RUN curl -LO https://github.com/fruux/Baikal/releases/download/${BAIKAL_VERSION}/baikal-${BAIKAL_VERSION}.zip
+RUN curl -sSLO https://github.com/fruux/Baikal/releases/download/${BAIKAL_VERSION}/baikal-${BAIKAL_VERSION}.zip
 RUN unzip -q baikal-${BAIKAL_VERSION}.zip
 
 WORKDIR /home/baikal
 RUN sqlite3 db.sqlite < Core/Resources/Db/SQLite/db.sql
 
 FROM php:7.1-fpm-alpine
-LABEL maintainer="Francesco Zanini <francesco@zanini.me>"
+LABEL maintainer "Francesco Zanini <francesco@zanini.me>"
 
 VOLUME /var/lib/baikal
 
