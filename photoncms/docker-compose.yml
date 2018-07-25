@@ -1,0 +1,44 @@
+version: "3"
+services:
+  cms:
+    image: cms:latest
+    ports:
+      - "8082:80"
+    networks:
+      - db
+      - redis
+    depends_on:
+      - db
+      - redis
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      APP_ENV: production
+      APP_KEY: 'base64:5EUimAxfmFyBrGi79WtowWBGQ508pKJqqy0qhnkA9WM='
+      APP_NAME: Test CMS
+      CAN_REGISTER_USER: 'false'
+      DB_DATABASE: photoncms
+      DB_HOST: db
+      DB_PASSWORD: mysecretpass
+      DB_USERNAME: photoncms
+      REDIS_HOST: redis
+  db:
+    image: mysql/mysql-server:8.0
+    networks:
+      - db
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: photoncms
+      MYSQL_USER: photoncms
+      MYSQL_PASSWORD: mysecretpass
+  redis:
+    image: redis:4-alpine
+    networks:
+      - redis
+networks:
+  db:
+  redis:
+volumes:
+  db-data:
