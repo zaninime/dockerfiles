@@ -1,27 +1,6 @@
-# FROM node:10.7-alpine
-
-# WORKDIR /app
-
-# RUN echo @edgecommunity http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories \
-#     && echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
-#     && apk add --no-cache \
-#         chromium \
-#         nss@edge \
-#         grep \
-#         dumb-init \
-#     && addgroup -S rendertron \
-#     && adduser -S rendertron rendertron \
-#     && chown -R rendertron:rendertron /app
-
-# USER rendertron
-
-# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-# RUN npm i rendertron@1.1.1 \
-#     && ln -sf /app/node_modules/.bin/rendertron rendertron
-
-# ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-# CMD ["/app/rendertron"]
 FROM node:10.7-slim
+
+EXPOSE 3000
 
 WORKDIR /app
 
