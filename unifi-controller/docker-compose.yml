@@ -2,7 +2,7 @@
 version: '3'
 services:
   unifi:
-    image: zaninime/unifi:5.8.24-1
+    image: zaninime/unifi:5.8.28-1
     ports:
       - 6789:6789
       - 8080:8080
