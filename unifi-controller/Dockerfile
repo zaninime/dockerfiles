@@ -1,4 +1,5 @@
-FROM debian:stretch
+# Debian Stretch
+FROM debian@sha256:066051f6674f6a3293bbd5a190081b1ae7fcae655a3884db59ebb3a2831da623
 LABEL maintainer "Francesco Zanini <francesco@zanini.me>"
 
 VOLUME /app/data
@@ -6,7 +7,7 @@ VOLUME /app/logs
 
 EXPOSE 6789 8080 8443 8843 8880 3478/udp
 
-ENV UNIFI_VERSION 5.9.29
+ENV UNIFI_VERSION 5.10.17
 ENV JVM_OPTS ""
 
 RUN apt-get update && \
