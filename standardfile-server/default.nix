@@ -1,17 +1,36 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 let
   inherit (builtins) substring;
-  inherit (pkgs) stdenv makeWrapper ruby bundlerEnv fetchFromGitHub;
+  inherit (pkgs) stdenv makeWrapper ruby bundlerEnv fetchFromGitHub mkShell;
 
   baseName = "standardfile-server";
-  rev = "0e5e0e1d4c7014a3bfc23fba3a74152f6e804885";
+  rev = "20d74bf5fe22ca18737b00354d23ba06e6136bfe";
   version = substring 0 8 rev;
 
   src = fetchFromGitHub {
     inherit rev;
     owner = "standardfile";
     repo = "ruby-server";
-    sha256 = "19ahvzm33dpqv8zxy018wk260cxglznxjja9z4lchq2d4fv6ylii";
+    sha256 = "1nnaam7ba16wbi3246ipijmbxri0x953yqr6h92ijbd9zwlay4bv";
+  };
+
+  runBundix = mkShell {
+    buildInputs = with pkgs; [
+      bundix
+      bundler
+      # libiconv
+      libxml2
+      # libxslt
+      mysql57
+      openssl
+      pkgconfig
+      ruby
+    ];
+
+    shellHook = ''
+      echo bundle install --path ./vendor
+      echo bundix
+    '';
   };
 
   rubyEnv = bundlerEnv {
@@ -27,11 +46,11 @@ let
     gemset = ./gemset.nix;
   };
 
-in
-
-stdenv.mkDerivation {
+in stdenv.mkDerivation {
   name = "${baseName}-${version}";
   inherit version src;
+
+  passthru = { inherit src runBundix; };
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = [ rubyEnv rubyEnv.wrappedRuby rubyEnv.bundler ];
