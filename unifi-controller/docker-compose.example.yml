@@ -1,0 +1,24 @@
+version: '2.4'
+services:
+  app:
+    image: zaninime/unifi-controller:5.11.47
+    networks:
+      serv:
+    volumes:
+      - ./unifi/data:/unifi/data
+      - ./unifi/log:/unifi/log
+      - ./unifi/run:/unifi/run
+    ports:
+      - 8080:8080
+      - 8443:8443
+    depends_on:
+      - db
+  db:
+    image: mongo:4.2.0
+    volumes:
+      - ./mongo/db:/data/db
+    networks:
+      - serv
+
+networks:
+  serv:
