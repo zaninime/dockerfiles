@@ -1,4 +1,4 @@
-{ stdenv, autoPatchelfHook, systemd, writeScript, fetchdeb, jdk, version, sha256
+{ stdenv, autoPatchelfHook, systemd, writeScript, fetchdeb, jre, version, sha256
 }:
 
 let
@@ -16,7 +16,7 @@ let
 
     cd "$BASE_DIR"
 
-    exec "${jdk}/bin/java" $JVM_OPTS -jar "$BASE_DIR/lib/ace.jar" "$@"
+    exec "${jre}/bin/java" $JVM_OPTS -jar "$BASE_DIR/lib/ace.jar" "$@"
   '';
 
 in stdenv.mkDerivation {

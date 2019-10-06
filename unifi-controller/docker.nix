@@ -1,5 +1,5 @@
 { lib, stdenv, writeScript, dockerTools, busybox, gosu, callPackage, skopeo
-, mkShell, jdk, version, sha256, imagePrefix ? null, imageTag ? null
+, mkShell, jre, version, sha256, imagePrefix ? null, imageTag ? null
 , registryHost ? "docker.io", }:
 
 with lib;
@@ -13,7 +13,7 @@ let
   tcpPorts = makePorts "tcp" [ 8080 8443 8880 8843 6789 27117 ];
   udpPorts = makePorts "udp" [ 1900 3478 5656 5657 5658 5659 10001 ];
 
-  app = callPackage ./unifi.nix { inherit jdk version sha256; };
+  app = callPackage ./unifi.nix { inherit jre version sha256; };
   baseName = app.pname;
 
   entrypointScript = writeScript "${baseName}-entrypoint" ''
@@ -82,4 +82,4 @@ let
       exec ${pushScript}
     '';
   };
-in { inherit containerImage pushScript push; }
+in { inherit containerImage pushScript push app; }
