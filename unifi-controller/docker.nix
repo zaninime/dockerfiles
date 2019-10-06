@@ -1,4 +1,4 @@
-{ lib, stdenv, writeScript, dockerTools, busybox, gosu, callPackage, skopeo
+{ lib, stdenv, writeScript, dockerTools, busybox, su-exec, callPackage, skopeo
 , mkShell, jre, version, sha256, imagePrefix ? null, imageTag ? null
 , registryHost ? "docker.io", }:
 
@@ -21,9 +21,8 @@ let
     set -euo pipefail
 
     if [ "$1" = 'unifi' ]; then
-      chown unifi:unifi /dev/stdout
-      chown -R unifi:unifi /unifi
-      exec ${gosu}/bin/gosu unifi:unifi /unifi/bin/${baseName} start
+      chown unifi:unifi /dev/stdout /unifi/*
+      exec ${su-exec}/bin/su-exec unifi:unifi /unifi/bin/${baseName} start
     else
       exec "$@"
     fi
