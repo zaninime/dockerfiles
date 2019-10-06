@@ -1,0 +1,12 @@
+diff --git a/cps/server.py b/cps/server.py
+index e5fe78e..47d19bd 100644
+--- a/cps/server.py
++++ b/cps/server.py
+@@ -186,6 +186,7 @@ class WebServer(object):
+ 
+     def _killServer(self, ignored_signum, ignored_frame):
+         self.stop()
++        sys.exit(0)
+ 
+     def stop(self, restart=False):
+         log.info("webserver stop (restart=%s)", restart)
