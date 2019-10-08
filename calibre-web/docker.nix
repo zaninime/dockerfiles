@@ -2,7 +2,7 @@
 let
   inherit (pkgs)
     dockerTools calibre busybox stdenv writeScript su-exec skopeo mkShell;
-  app = import ./. { inherit pkgs; };
+  app = import ./app.nix { inherit pkgs; };
   inherit (app) pname version;
 
   user = "calibreweb";
