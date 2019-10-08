@@ -18,15 +18,26 @@ let
   imageName =
     if imagePrefix != null then "${imagePrefix}/${baseName}" else baseName;
   tag = if imageTag != null then imageTag else version;
+  user = "unifi";
+  config = {
+    Entrypoint = [ entrypointScript ];
+    Cmd = [ "unifi" ];
+    ExposedPorts = tcpPorts // udpPorts;
+    Volumes = {
+      "/unifi/data" = { };
+      "/unifi/log" = { };
+      "/unifi/run" = { };
+    };
+  };
 
   entrypointScript = writeScript "${baseName}-entrypoint" ''
     #!${stdenv.shell}
     set -euo pipefail
 
     if [ "$1" = 'unifi' ]; then
-      chown unifi:unifi /dev/stdout /unifi/*
+      chown ${user}:${user} /dev/stdout /unifi/*
       cd /unifi
-      exec ${su-exec}/bin/su-exec unifi:unifi /unifi/bin/${baseName} start
+      exec ${su-exec}/bin/su-exec ${user}:${user} /bin/${baseName} start
     else
       exec "$@"
     fi
@@ -35,23 +46,13 @@ let
   containerImage = let
     baseImage = dockerTools.buildLayeredImage {
       name = "${imageName}-base";
-      inherit tag;
+      inherit tag config;
       maxLayers = 120;
-      contents = [ busybox ];
-      config = {
-        Entrypoint = [ entrypointScript ];
-        Cmd = [ "unifi" ];
-        ExposedPorts = tcpPorts // udpPorts;
-        Volumes = {
-          "/unifi/data" = { };
-          "/unifi/log" = { };
-          "/unifi/run" = { };
-        };
-      };
+      contents = [ busybox app ];
     };
   in dockerTools.buildImage {
     name = imageName;
-    inherit tag;
+    inherit tag config;
     fromImage = baseImage;
 
     runAsRoot = ''
@@ -60,17 +61,15 @@ let
       ${dockerTools.shadowSetup}
       set -x
 
-      groupadd -g 999 unifi
-      useradd -d /unifi -g unifi -M -u 999 unifi
+      groupadd -g 999 ${user}
+      useradd -d /unifi -g ${user} -M -u 999 ${user}
 
       mkdir /tmp
       chmod 0777 /tmp
 
-      cp -r ${app}/. /unifi
-      mkdir /unifi/logs
+      mkdir -p /unifi/logs
+      chown -R ${user}:${user} /unifi
       ln -sf /dev/stdout /unifi/logs/server.log
-
-      chmod +w unifi
     '';
   };
 
