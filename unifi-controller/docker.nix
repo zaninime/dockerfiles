@@ -22,6 +22,7 @@ let
 
     if [ "$1" = 'unifi' ]; then
       chown unifi:unifi /dev/stdout /unifi/*
+      cd /unifi
       exec ${su-exec}/bin/su-exec unifi:unifi /unifi/bin/${baseName} start
     else
       exec "$@"
