@@ -15,6 +15,9 @@ let
 
   app = callPackage ./unifi.nix { inherit jre version sha256; };
   baseName = app.pname;
+  imageName =
+    if imagePrefix != null then "${imagePrefix}/${baseName}" else baseName;
+  tag = if imageTag != null then imageTag else version;
 
   entrypointScript = writeScript "${baseName}-entrypoint" ''
     #!${stdenv.shell}
@@ -29,23 +32,27 @@ let
     fi
   '';
 
-  containerImage = dockerTools.buildImage {
-    name =
-      if imagePrefix != null then "${imagePrefix}/${baseName}" else baseName;
-    tag = if imageTag != null then imageTag else version;
-
-    contents = [ busybox ];
-
-    config = {
-      Entrypoint = [ entrypointScript ];
-      Cmd = [ "unifi" ];
-      ExposedPorts = tcpPorts // udpPorts;
-      Volumes = {
-        "/unifi/data" = { };
-        "/unifi/log" = { };
-        "/unifi/run" = { };
+  containerImage = let
+    baseImage = dockerTools.buildLayeredImage {
+      name = "${imageName}-base";
+      inherit tag;
+      maxLayers = 120;
+      contents = [ busybox ];
+      config = {
+        Entrypoint = [ entrypointScript ];
+        Cmd = [ "unifi" ];
+        ExposedPorts = tcpPorts // udpPorts;
+        Volumes = {
+          "/unifi/data" = { };
+          "/unifi/log" = { };
+          "/unifi/run" = { };
+        };
       };
     };
+  in dockerTools.buildImage {
+    name = imageName;
+    inherit tag;
+    fromImage = baseImage;
 
     runAsRoot = ''
       #!${stdenv.shell}
