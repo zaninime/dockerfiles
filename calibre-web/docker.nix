@@ -1,4 +1,7 @@
-{ pkgs ? import ./pkgs.nix }:
+{ pkgs ? import ./pkgs.nix, slimVariant ? false }:
+
+with pkgs.lib;
+
 let
   inherit (pkgs)
     dockerTools calibre busybox stdenv writeScript su-exec skopeo mkShell;
@@ -17,8 +20,12 @@ let
       echo -----------------------------------------------------------
       echo "1. Configure Calibre-Web to read the Calibre DB from /data/calibre"
       echo "2. Make sure owner:group are set to 999:999 on volumes"
-      echo "3. These binaries are available:"
-      echo "  - /bin/ebook-convert"
+        ${
+          optionalString (!slimVariant) ''
+            echo "3. These binaries are available:"
+            echo "  - /bin/ebook-convert"
+          ''
+        }
       echo -----------------------------------------------------------
       echo
       echo
@@ -28,20 +35,30 @@ let
     fi
   '';
 
-  containerImage = dockerTools.buildImage {
-    name = "zaninime/${pname}";
-    tag = version;
+  name = "zaninime/${pname}";
+  tag = "${version}${optionalString slimVariant "-slim"}";
 
-    contents = [ calibre busybox ];
-    config = {
-      Entrypoint = [ entrypointScript ];
-      Cmd = [ "calibre-web" ];
-      Volumes = {
-        "/data/db" = { };
-        "/data/calibre" = { };
-      };
-      ExposedPorts = { "8083/tcp" = { }; };
+  config = {
+    Entrypoint = [ entrypointScript ];
+    Cmd = [ "calibre-web" ];
+    Volumes = {
+      "/data/db" = { };
+      "/data/calibre" = { };
     };
+    ExposedPorts = { "8083/tcp" = { }; };
+  };
+
+  containerImage = let
+    baseImage = dockerTools.buildLayeredImage {
+      name = "${name}-base";
+      inherit tag config;
+      contents = [ busybox ] ++ optionals (!slimVariant) [ calibre ];
+      maxLayers = 120;
+    };
+  in dockerTools.buildImage {
+    inherit name tag config;
+    fromImage = baseImage;
+    diskSize = 4096;
 
     runAsRoot = ''
       #!${stdenv.shell}
