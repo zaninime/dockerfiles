@@ -5,13 +5,13 @@ let
   imagePrefix = "zaninime";
   jre = (jdk8.override { headless = true; }).jre;
 in rec {
-  unifi-5_11_50 = callPackage ./docker.nix {
+  unifi-5_12_35 = callPackage ./docker.nix {
     inherit imagePrefix jre;
-    version = "5.11.50";
-    sha256 = "0f36q02d22hlssavszl99xjykz3j0f2ki68rj14v3wl8j3rkfc03";
+    version = "5.12.35";
+    sha256 = "0ml172q4v92mblp90m7w6766hgf8lxaildldrl9fpbk7wisv6kph";
   };
 
-  unifi-5_11_x = unifi-5_11_50.override { imageTag = "5.11"; };
+  unifi-5_12_x = unifi-5_12_35.override { imageTag = "5.12"; };
 
   # ---
 
