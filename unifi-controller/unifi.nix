@@ -1,7 +1,7 @@
-{ stdenv, autoPatchelfHook, systemd, writeScript, fetchdeb, jre, version, sha256
-}:
+{ stdenv, autoPatchelfHook, systemd, writeScript, fetchdeb, jre, dpkg, src }:
 
 let
+  inherit (src) version;
   baseName = "unifi-controller";
 
   launchScript = writeScript "${baseName}-boot-${version}" ''
@@ -20,17 +20,16 @@ let
   '';
 
 in stdenv.mkDerivation {
-  inherit version;
   pname = baseName;
-
-  src = fetchdeb {
-    url = "https://dl.ui.com/unifi/${version}/unifi_sysvinit_all.deb";
-    inherit sha256;
-  };
+  inherit version src;
 
   nativeBuildInputs = [ autoPatchelfHook ];
   buildInputs = [ systemd stdenv.cc.cc ];
   dontBuild = true;
+
+  unpackPhase = ''
+    ${dpkg}/bin/dpkg -x $src .
+  '';
 
   installPhase = ''
     mkdir -p $out/bin

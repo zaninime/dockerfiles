@@ -1,10 +1,11 @@
 { lib, stdenv, writeScript, dockerTools, busybox, su-exec, callPackage, skopeo
-, mkShell, jre, version, sha256, imagePrefix ? null, imageTag ? null
+, mkShell, jre, src, imagePrefix ? null, imageTag ? null
 , registryHost ? "docker.io", }:
 
 with lib;
 
 let
+  inherit (src) version;
   makePorts = proto: ports:
     listToAttrs
     (map (port: nameValuePair "${toString port}/${proto}" { }) ports);
@@ -13,7 +14,7 @@ let
   tcpPorts = makePorts "tcp" [ 8080 8443 8880 8843 6789 27117 ];
   udpPorts = makePorts "udp" [ 1900 3478 5656 5657 5658 5659 10001 ];
 
-  app = callPackage ./unifi.nix { inherit jre version sha256; };
+  app = callPackage ./unifi.nix { inherit jre src; };
   baseName = app.pname;
 
   entrypointScript = writeScript "${baseName}-entrypoint" ''
