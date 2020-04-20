@@ -24,11 +24,11 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "unifi-5-12": {
-        "sha256": "0ln8x7yisanbx1afclhffa0f3fk0sgh7dpj548xyhn5mgpwbj4i2",
+        "sha256": "119jdwk2ys3vzg9wa4h25rwgl6sjly6v52k1g1ycrq0bspzxdhm2",
         "type": "file",
-        "url": "https://dl.ui.com/unifi/5.12.35/unifi_sysvinit_all.deb",
+        "url": "https://dl.ui.com/unifi/5.12.66/unifi_sysvinit_all.deb",
         "url_template": "https://dl.ui.com/unifi/<version>/unifi_sysvinit_all.deb",
-        "version": "5.12.35"
+        "version": "5.12.66"
     },
     "unifi-5-6": {
         "sha256": "0wxkv774pw43c15jk0sg534l5za4j067nr85r5fw58iar3w2l84x",

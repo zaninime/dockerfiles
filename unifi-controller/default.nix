@@ -1,12 +1,11 @@
 { pkgs ? import ./nix/pkgs.nix }:
 
 let
-  inherit (pkgs) callPackage jdk8;
+  inherit (pkgs) callPackage;
   imagePrefix = "zaninime";
-  jre = (jdk8.override { headless = true; }).jre;
 in rec {
   unifi-5_12_x = callPackage ./docker.nix {
-    inherit imagePrefix jre;
+    inherit imagePrefix;
     src = pkgs.unifi-5-12;
   };
 
@@ -15,7 +14,7 @@ in rec {
   # ---
 
   unifi-5_6_x = callPackage ./docker.nix {
-    inherit imagePrefix jre;
+    inherit imagePrefix;
     src = pkgs.unifi-5-6;
   };
 

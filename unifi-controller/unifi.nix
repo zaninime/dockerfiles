@@ -1,11 +1,10 @@
-{ stdenv, autoPatchelfHook, systemd, writeScript, fetchdeb, jre, dpkg, src }:
+{ stdenv, autoPatchelfHook, systemd, writers, jre8_headless, dpkg, src }:
 
 let
   inherit (src) version;
   baseName = "unifi-controller";
 
-  launchScript = writeScript "${baseName}-boot-${version}" ''
-    #!${stdenv.shell}
+  launchScript = writers.writeBash "${baseName}-boot-${version}" ''
     set -euo pipefail
 
     MY_DIR="$(dirname "$(readlink -f "$0")")"
@@ -16,7 +15,7 @@ let
 
     cd "$BASE_DIR"
 
-    exec "${jre}/bin/java" $JVM_OPTS -jar "$BASE_DIR/lib/ace.jar" "$@"
+    exec "${jre8_headless}/bin/java" $JVM_OPTS -jar "$BASE_DIR/lib/ace.jar" "$@"
   '';
 
 in stdenv.mkDerivation {

@@ -1,6 +1,6 @@
-{ lib, stdenv, writeScript, dockerTools, busybox, su-exec, callPackage, skopeo
-, mkShell, jre, src, imagePrefix ? null, imageTag ? null
-, registryHost ? "docker.io", }:
+{ lib, stdenv, writers, dockerTools, busybox, su-exec, callPackage, skopeo
+, mkShell, src, imagePrefix ? null, imageTag ? null, registryHost ? "docker.io",
+}:
 
 with lib;
 
@@ -14,11 +14,10 @@ let
   tcpPorts = makePorts "tcp" [ 8080 8443 8880 8843 6789 27117 ];
   udpPorts = makePorts "udp" [ 1900 3478 5656 5657 5658 5659 10001 ];
 
-  app = callPackage ./unifi.nix { inherit jre src; };
+  app = callPackage ./unifi.nix { inherit src; };
   baseName = app.pname;
 
-  entrypointScript = writeScript "${baseName}-entrypoint" ''
-    #!${stdenv.shell}
+  entrypointScript = writers.writeBash "${baseName}-entrypoint" ''
     set -euo pipefail
 
     if [ "$1" = 'unifi' ]; then
@@ -67,15 +66,15 @@ let
     '';
   };
 
-  pushScript = writeScript "${baseName}-push-container-image-${version}" ''
-    #!${stdenv.shell}
-    set -euo pipefail
+  pushScript =
+    writers.writeBash "${baseName}-push-container-image-${version}" ''
+      set -euo pipefail
 
-    readonly imageUri="${registryHost}/${containerImage.imageName}:${containerImage.imageTag}"
+      readonly imageUri="${registryHost}/${containerImage.imageName}:${containerImage.imageTag}"
 
-    echo "Pushing $imageUri"
-    exec "${skopeo}/bin/skopeo" copy "docker-archive:${containerImage}" "docker://$imageUri" "$@"
-  '';
+      echo "Pushing $imageUri"
+      exec "${skopeo}/bin/skopeo" copy "docker-archive:${containerImage}" "docker://$imageUri" "$@"
+    '';
 
   push = mkShell {
     shellHook = ''
