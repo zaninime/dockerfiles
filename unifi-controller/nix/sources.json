@@ -23,18 +23,11 @@
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/caad1a78c47cc9f2c8bd4d0785a07c62e98c03c9.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "unifi-5-12": {
-        "sha256": "119jdwk2ys3vzg9wa4h25rwgl6sjly6v52k1g1ycrq0bspzxdhm2",
+    "unifi-5_12_x": {
+        "sha256": "00d7kxn3f1c0i4kg81hz2hf9bdbccb3d1zs7js414rpc5k3xg3kz",
         "type": "file",
-        "url": "https://dl.ui.com/unifi/5.12.66/unifi_sysvinit_all.deb",
+        "url": "https://dl.ui.com/unifi/5.12.72/unifi_sysvinit_all.deb",
         "url_template": "https://dl.ui.com/unifi/<version>/unifi_sysvinit_all.deb",
-        "version": "5.12.66"
-    },
-    "unifi-5-6": {
-        "sha256": "0wxkv774pw43c15jk0sg534l5za4j067nr85r5fw58iar3w2l84x",
-        "type": "file",
-        "url": "https://dl.ui.com/unifi/5.6.42/unifi_sysvinit_all.deb",
-        "url_template": "https://dl.ui.com/unifi/<version>/unifi_sysvinit_all.deb",
-        "version": "5.6.42"
+        "version": "5.12.72"
     }
 }
