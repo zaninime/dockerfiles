@@ -1,33 +1,21 @@
 {
-    "niv": {
-        "branch": "master",
-        "description": "Easy dependency management for Nix projects",
-        "homepage": "https://github.com/nmattia/niv",
-        "owner": "nmattia",
-        "repo": "niv",
-        "rev": "c20455616d5ec3196a66d34c184a0b8390b97b44",
-        "sha256": "0hy9w93qji61gmb5dg11njgcml4jybhv53y6ayny9cj8m1hvr9i0",
-        "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/c20455616d5ec3196a66d34c184a0b8390b97b44.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "nixpkgs": {
         "branch": "nixpkgs-unstable",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "caad1a78c47cc9f2c8bd4d0785a07c62e98c03c9",
-        "sha256": "1nk7a1vz0kzdwh36qdj73fkv9nnjylk8q8rrsgls4rbr3pxz7801",
+        "rev": "72b9660dc18ba347f7cd41a9504fc181a6d87dc3",
+        "sha256": "1cqgpw263bz261bgz34j6hiawi4hi6smwp6981yz375fx0g6kmss",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/caad1a78c47cc9f2c8bd4d0785a07c62e98c03c9.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/72b9660dc18ba347f7cd41a9504fc181a6d87dc3.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "unifi-5_12_x": {
-        "sha256": "00d7kxn3f1c0i4kg81hz2hf9bdbccb3d1zs7js414rpc5k3xg3kz",
+    "unifi-6_0_x": {
+        "sha256": "0yiwg5bpnmfk922grjd7k80fg655w1j2sv97gg00j2il95839yxp",
         "type": "file",
-        "url": "https://dl.ui.com/unifi/5.12.72/unifi_sysvinit_all.deb",
+        "url": "https://dl.ui.com/unifi/6.0.23/unifi_sysvinit_all.deb",
         "url_template": "https://dl.ui.com/unifi/<version>/unifi_sysvinit_all.deb",
-        "version": "5.12.72"
+        "version": "6.0.23"
     }
 }

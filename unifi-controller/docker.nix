@@ -75,10 +75,4 @@ let
       echo "Pushing $imageUri"
       exec "${skopeo}/bin/skopeo" copy "docker-archive:${containerImage}" "docker://$imageUri" "$@"
     '';
-
-  push = mkShell {
-    shellHook = ''
-      exec ${pushScript}
-    '';
-  };
-in { inherit containerImage pushScript push app; }
+in { inherit containerImage pushScript app; }
