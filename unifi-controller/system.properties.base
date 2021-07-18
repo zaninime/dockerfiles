@@ -1,4 +1,0 @@
-db.mongo.local=false
-db.mongo.uri=mongodb\://db\:27017/unifi
-statsdb.mongo.uri=mongodb\://db\:27017/unifi-stats
-unifi.db.name=unifi

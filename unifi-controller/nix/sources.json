@@ -11,11 +11,11 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/efee454783c5c14ae78687439077c1d3f0544d97.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "unifi-6_2_x": {
-        "sha256": "14pfy9cxjyaczdp9lk56by8s5485sjsz2414x7wshf1x76yfjh27",
+    "unifi": {
+        "sha256": "15mwl02v50j30vvsmky9kp42i04y38kipapczyi5srhbd9jddyh3",
         "type": "file",
-        "url": "https://dl.ui.com/unifi/6.2.25/unifi_sysvinit_all.deb",
+        "url": "https://dl.ui.com/unifi/6.2.26/unifi_sysvinit_all.deb",
         "url_template": "https://dl.ui.com/unifi/<version>/unifi_sysvinit_all.deb",
-        "version": "6.2.25"
+        "version": "6.2.26"
     }
 }

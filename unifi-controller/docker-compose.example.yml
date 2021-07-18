@@ -1,9 +1,7 @@
 version: '2.4'
 services:
   app:
-    image: zaninime/unifi-controller:5.11.47
-    networks:
-      serv:
+    image: zaninime/unifi-controller:6.2.26
     volumes:
       - ./unifi/data:/unifi/data
       - ./unifi/log:/unifi/log
@@ -13,12 +11,15 @@ services:
       - 8443:8443
     depends_on:
       - db
+    environment:
+      INITIAL_SYSTEM_PROPERTIES: |
+        db.mongo.local=false
+        db.mongo.uri=mongodb\://db\:27017/unifi
+        statdb.mongo.uri=mongodb\://db\:27017/unifi-stats
+        unifi.db.name=unifi
+        # debug.system=debug
+        # debug.mgmt=debug
   db:
     image: mongo:4.2.0
     volumes:
       - ./mongo/db:/data/db
-    networks:
-      - serv
-
-networks:
-  serv:

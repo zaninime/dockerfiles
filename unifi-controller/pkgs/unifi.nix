@@ -1,26 +1,23 @@
-{ stdenv, autoPatchelfHook, systemd, writers, jre8_headless, dpkg, src }:
+{ stdenv, autoPatchelfHook, systemd, writers, jdk11_headless, dpkg }:
 
 let
-  inherit (src) version;
-  baseName = "unifi-controller";
+  src = (import ../nix/sources.nix).unifi;
+  baseName = "unifi";
 
-  launchScript = writers.writeBash "${baseName}-boot-${version}" ''
-    set -euo pipefail
-
-    MY_DIR="$(dirname "$(readlink -f "$0")")"
-    BASE_DIR="$(readlink -f "$MY_DIR/..")"
+  launchScript = writers.writeBash "${baseName}-boot-${src.version}" ''
+    set -eu
 
     JVM_EXTRA_OPTS="''${JVM_EXTRA_OPTS:-}"
     JVM_OPTS="$JVM_EXTRA_OPTS -Djava.awt.headless=true -Dfile.encoding=UTF-8"
 
-    cd "$BASE_DIR"
-
-    exec "${jre8_headless}/bin/java" $JVM_OPTS -jar "$BASE_DIR/lib/ace.jar" "$@"
+    exec "${jdk11_headless}/bin/java" $JVM_OPTS -jar lib/ace.jar "$@"
   '';
 
 in stdenv.mkDerivation {
   pname = baseName;
-  inherit version src;
+  version = src.version;
+
+  inherit src;
 
   nativeBuildInputs = [ autoPatchelfHook ];
   buildInputs = [ systemd stdenv.cc.cc ];
