@@ -27,6 +27,10 @@ in stdenv.mkDerivation {
     ${dpkg}/bin/dpkg -x $src .
   '';
 
+  configurePhase = ''
+    rm -rfv usr/lib/unifi/lib/native/Linux/{aarch64,armv7}
+  '';
+
   installPhase = ''
     mkdir -p $out/bin
     cp -ar usr/lib/unifi/{dl,lib,webapps} $out
