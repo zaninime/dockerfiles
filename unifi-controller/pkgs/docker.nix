@@ -97,25 +97,6 @@ let
         "/unifi/run" = { };
       };
     };
-
-    #runAsRoot = ''
-    #  #!${stdenv.shell}
-    #  set -euo pipefail
-    #  ${dockerTools.shadowSetup}
-    #  set -x
-
-    #  groupadd -g 999 unifi
-    #  useradd -d /unifi -g unifi -M -u 999 unifi
-
-    #  mkdir /tmp
-    #  chmod 0777 /tmp
-
-    #  cp -r ${app}/. /unifi
-    #  mkdir /unifi/logs
-    #  ln -sf /dev/stdout /unifi/logs/server.log
-
-    #  chmod +w unifi
-    #'';
   });
 
 in containerImage.overrideAttrs (_: { passthru.pushScript = pushScript; })

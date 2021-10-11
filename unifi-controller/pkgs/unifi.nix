@@ -1,4 +1,4 @@
-{ stdenv, autoPatchelfHook, systemd, writers, jdk11_headless, dpkg }:
+{ stdenv, autoPatchelfHook, systemd, writers, jre8_headless, dpkg }:
 
 let
   src = (import ../nix/sources.nix).unifi;
@@ -10,7 +10,7 @@ let
     JVM_EXTRA_OPTS="''${JVM_EXTRA_OPTS:-}"
     JVM_OPTS="$JVM_EXTRA_OPTS -Djava.awt.headless=true -Dfile.encoding=UTF-8"
 
-    exec "${jdk11_headless}/bin/java" $JVM_OPTS -jar lib/ace.jar "$@"
+    exec "${jre8_headless}/bin/java" $JVM_OPTS -jar lib/ace.jar "$@"
   '';
 
 in stdenv.mkDerivation {

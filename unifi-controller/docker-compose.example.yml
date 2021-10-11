@@ -1,7 +1,7 @@
 version: '2.4'
 services:
   app:
-    image: zaninime/unifi-controller:6.2.26
+    image: zaninime/unifi-controller:6.4.54
     volumes:
       - ./unifi/data:/unifi/data
       - ./unifi/log:/unifi/log
