@@ -1,5 +1,11 @@
-{ stdenv, autoPatchelfHook, systemd, writers, jre8_headless, dpkg }:
-
+{
+  stdenv,
+  autoPatchelfHook,
+  systemd,
+  writers,
+  jre8_headless,
+  dpkg,
+}:
 let
   src = (import ../nix/sources.nix).unifi;
   baseName = "unifi";
@@ -12,10 +18,10 @@ let
 
     exec "${jre8_headless}/bin/java" $JVM_OPTS -jar lib/ace.jar "$@"
   '';
-
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   pname = baseName;
-  version = src.version;
+  inherit (src) version;
 
   inherit src;
 

@@ -1,10 +1,20 @@
-{ lib, unifi, writers, dockerTools, runtimeShell, busybox, su-exec, skopeo
-, writeTextDir, imageName ? "zaninime/unifi-controller"
-, registryHost ? "docker.io", user ? "unifi", uid ? 999, gid ? uid }:
-
-with lib;
-
-let
+{
+  lib,
+  unifi,
+  writers,
+  dockerTools,
+  runtimeShell,
+  busybox,
+  su-exec,
+  skopeo,
+  writeTextDir,
+  imageName ? "zaninime/dockerfiles/unifi-controller",
+  registryHost ? "ghcr.io",
+  user ? "unifi",
+  uid ? 999,
+  gid ? uid,
+}:
+with lib; let
   tag = unifi.version;
 
   makePorts = proto: ports:
@@ -54,22 +64,30 @@ let
   '';
 
   nonRootShadowSetup = [
-    (writeTextDir "etc/shadow" ''
-      root:!x:::::::
-      ${user}:!:::::::
-    '')
-    (writeTextDir "etc/passwd" ''
-      root:x:0:0::/root:${runtimeShell}
-      ${user}:x:${toString uid}:${toString gid}::/home/${user}:
-    '')
-    (writeTextDir "etc/group" ''
-      root:x:0:
-      ${user}:x:${toString gid}:
-    '')
-    (writeTextDir "etc/gshadow" ''
-      root:x::
-      ${user}:x::
-    '')
+    (
+      writeTextDir "etc/shadow" ''
+        root:!x:::::::
+        ${user}:!:::::::
+      ''
+    )
+    (
+      writeTextDir "etc/passwd" ''
+        root:x:0:0::/root:${runtimeShell}
+        ${user}:x:${toString uid}:${toString gid}::/home/${user}:
+      ''
+    )
+    (
+      writeTextDir "etc/group" ''
+        root:x:0:
+        ${user}:x:${toString gid}:
+      ''
+    )
+    (
+      writeTextDir "etc/gshadow" ''
+        root:x::
+        ${user}:x::
+      ''
+    )
   ];
 
   pushScript = writers.writeBash "unifi-push-container-image-${tag}" ''
@@ -81,7 +99,7 @@ let
     exec "${skopeo}/bin/skopeo" copy "docker-archive:${containerImage}" "docker://$imageUri" "$@"
   '';
 
-  containerImage = (dockerTools.buildLayeredImage {
+  containerImage = dockerTools.buildLayeredImage {
     name = imageName;
     inherit tag;
 
@@ -96,7 +114,8 @@ let
         "/unifi/log" = { };
         "/unifi/run" = { };
       };
+      Labels."org.opencontainers.image.source" = "https://github.com/zaninime/dockerfiles";
     };
-  });
-
-in containerImage.overrideAttrs (_: { passthru.pushScript = pushScript; })
+  };
+in
+  containerImage.overrideAttrs (_: { passthru.pushScript = pushScript; })
