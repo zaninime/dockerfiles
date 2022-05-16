@@ -1,21 +1,21 @@
 {
     "nixpkgs": {
-        "branch": "nixpkgs-unstable",
+        "branch": "release-21.11",
         "description": "Nix Packages collection",
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "30d3d79b7d3607d56546dd2a6b49e156ba0ec634",
-        "sha256": "0x5j9q1vi00c6kavnjlrwl3yy1xs60c34pkygm49dld2sgws7n0a",
+        "rev": "d3fd775b8388ec2c4b99cc237ec6f93d7b04dc2e",
+        "sha256": "0hq27sp2db89yqalhb47pkwxpkm0chr8c08mp50j2wd8sn1c3a1a",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/30d3d79b7d3607d56546dd2a6b49e156ba0ec634.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/d3fd775b8388ec2c4b99cc237ec6f93d7b04dc2e.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "unifi": {
-        "sha256": "066ngn5jjqszr9h9b8csczblky98hx48mx8mmdgphjx65v3vd60d",
+        "sha256": "1faz1kyi2zwyxnvb1h7plaiqyixqqlsay5m90hb2zfkbkwpvhl4a",
         "type": "file",
-        "url": "https://dl.ui.com/unifi/7.0.25/unifi_sysvinit_all.deb",
+        "url": "https://dl.ui.com/unifi/7.1.65/unifi_sysvinit_all.deb",
         "url_template": "https://dl.ui.com/unifi/<version>/unifi_sysvinit_all.deb",
-        "version": "7.0.25"
+        "version": "7.1.65"
     }
 }

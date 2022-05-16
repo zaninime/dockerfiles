@@ -35,11 +35,13 @@ stdenv.mkDerivation {
 
   configurePhase = ''
     rm -rfv usr/lib/unifi/lib/native/Linux/{aarch64,armv7}
+    rm -rfv usr/lib/unifi/lib/native/{Mac,Windows}
   '';
 
   installPhase = ''
     mkdir -p $out/bin
     cp -ar usr/lib/unifi/{dl,lib,webapps} $out
+    chmod -Rv a+x $out/lib/native/**/*
     cp ${launchScript} $out/bin/${baseName}
   '';
 }
