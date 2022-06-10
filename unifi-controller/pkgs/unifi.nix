@@ -5,8 +5,7 @@
   writers,
   jre8_headless,
   dpkg,
-}:
-let
+}: let
   src = (import ../nix/sources.nix).unifi;
   baseName = "unifi";
 
@@ -19,29 +18,29 @@ let
     exec "${jre8_headless}/bin/java" $JVM_OPTS -jar lib/ace.jar "$@"
   '';
 in
-stdenv.mkDerivation {
-  pname = baseName;
-  inherit (src) version;
+  stdenv.mkDerivation {
+    pname = baseName;
+    inherit (src) version;
 
-  inherit src;
+    inherit src;
 
-  nativeBuildInputs = [ autoPatchelfHook ];
-  buildInputs = [ systemd stdenv.cc.cc ];
-  dontBuild = true;
+    nativeBuildInputs = [autoPatchelfHook];
+    buildInputs = [systemd stdenv.cc.cc];
+    dontBuild = true;
 
-  unpackPhase = ''
-    ${dpkg}/bin/dpkg -x $src .
-  '';
+    unpackPhase = ''
+      ${dpkg}/bin/dpkg -x $src .
+    '';
 
-  configurePhase = ''
-    rm -rfv usr/lib/unifi/lib/native/Linux/{aarch64,armv7}
-    rm -rfv usr/lib/unifi/lib/native/{Mac,Windows}
-  '';
+    configurePhase = ''
+      rm -rfv usr/lib/unifi/lib/native/Linux/{aarch64,armv7}
+      rm -rfv usr/lib/unifi/lib/native/{Mac,Windows}
+    '';
 
-  installPhase = ''
-    mkdir -p $out/bin
-    cp -ar usr/lib/unifi/{dl,lib,webapps} $out
-    chmod -Rv a+x $out/lib/native/**/*
-    cp ${launchScript} $out/bin/${baseName}
-  '';
-}
+    installPhase = ''
+      mkdir -p $out/bin
+      cp -ar usr/lib/unifi/{dl,lib,webapps} $out
+      chmod -Rv a+x $out/lib/native/**/*
+      cp ${launchScript} $out/bin/${baseName}
+    '';
+  }

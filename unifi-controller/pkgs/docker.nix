@@ -19,11 +19,11 @@ with lib; let
 
   makePorts = proto: ports:
     listToAttrs
-    (map (port: nameValuePair "${toString port}/${proto}" { }) ports);
+    (map (port: nameValuePair "${toString port}/${proto}" {}) ports);
 
   # https://help.ubnt.com/hc/en-us/articles/218506997-UniFi-Ports-Used
-  tcpPorts = makePorts "tcp" [ 8080 8443 8880 8843 6789 27117 ];
-  udpPorts = makePorts "udp" [ 1900 3478 5656 5657 5658 5659 10001 ];
+  tcpPorts = makePorts "tcp" [8080 8443 8880 8843 6789 27117];
+  udpPorts = makePorts "udp" [1900 3478 5656 5657 5658 5659 10001];
 
   entrypointScript = writers.writeBash "unifi-docker-entrypoint" ''
     set -eu
@@ -103,19 +103,19 @@ with lib; let
     name = imageName;
     inherit tag;
 
-    contents = [ busybox ] ++ nonRootShadowSetup;
+    contents = [busybox] ++ nonRootShadowSetup;
 
     config = {
-      Entrypoint = [ entrypointScript ];
-      Cmd = [ "unifi" ];
+      Entrypoint = [entrypointScript];
+      Cmd = ["unifi"];
       ExposedPorts = tcpPorts // udpPorts;
       Volumes = {
-        "/unifi/data" = { };
-        "/unifi/log" = { };
-        "/unifi/run" = { };
+        "/unifi/data" = {};
+        "/unifi/log" = {};
+        "/unifi/run" = {};
       };
       Labels."org.opencontainers.image.source" = "https://github.com/zaninime/dockerfiles";
     };
   };
 in
-  containerImage.overrideAttrs (_: { passthru.pushScript = pushScript; })
+  containerImage.overrideAttrs (_: {passthru.pushScript = pushScript;})
